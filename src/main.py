@@ -10,7 +10,7 @@ from tensorflow.keras import Model
 
 content_path = 'content.jpg'
 style_path = 'style.jpg'
-output_path = 'output.jpg'
+output_path = 'output_{}.jpg'
 
 content_layers = ['block5_conv2']
 style_layers = [
@@ -118,10 +118,9 @@ def run_style_transfer(content_path, style_path, num_iterations=1000, content_we
         'content_features': content_features
     }
 
-    num_rows = 2
-    num_cols = 5
-    display_interval = num_iterations / (num_rows * num_cols)
-    start_time = time.time()
+    ratio = 20
+    display_interval = num_iterations / (ratio)
+    # start_time = time.time()
     global_start = time.time()
 
     for i in range(num_iterations):
@@ -135,7 +134,7 @@ def run_style_transfer(content_path, style_path, num_iterations=1000, content_we
             best_loss = loss
             best_img = deprocess_image(init_image.numpy())
 
-        if i % display_interval == 10:
+        if i % display_interval == 0:
             print('Iteration: {}'.format(i))
             print('Total Loss: {:.4e}, Style Loss: {:.4e}, Content Loss: {:.4e}'.format(loss, style_loss, content_loss))
             Image.fromarray(best_img).save(output_path.format(i))
