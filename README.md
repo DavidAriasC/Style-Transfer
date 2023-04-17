@@ -14,11 +14,20 @@ This code requires the following packages to be installed:
 
 Run the script `test.py` and provide the path to the content image, the style image, and the output image.
 
-```python
-python test.py [content_path] [style_path] [output_path]
+```console
+python test.py [-h] [--norm] content_path style_path output_path
 ```
 
 The script will generate an image with the style of the style image applied to the content image, and save it to the specified output path.
+
+Positional arguments:
+  * ``content_path``  path to the content image
+  * ``style_path``    path to the style image
+  * ``output_path``   path to the output image
+
+Options:
+  * ``-h``, ``--help``    show this help message and exit
+  * ``--norm``        use instance normalization
 
 ## How it works
 
