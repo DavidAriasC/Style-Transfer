@@ -96,7 +96,7 @@ def compute_grads(cfg):
     total_loss = all_loss[0]
     return tape.gradient(total_loss, cfg['init_image']), all_loss
 
-def run_style_transfer(content_path, style_path, num_iterations=1000, content_weight=1e3, style_weight=1e-2):
+def run_style_transfer(content_path, style_path, num_iterations=1000, content_weight=1e3, style_weight=1e-2, model_path=None):
     model = get_model(content_layers, style_layers)
     model.summary()
     for layer in model.layers:
@@ -151,6 +151,10 @@ def run_style_transfer(content_path, style_path, num_iterations=1000, content_we
 
     print('Total time: {:.4f}s'.format(time.time() - global_start))
     Image.fromarray(best_img).save(output_path.format(num_iterations))
+
+    if model_path is not None:
+        model.save(model_path)
+
     return best_img
 
 # Get user input for num_iterations, content_weight, and style_weight
@@ -158,5 +162,5 @@ num_iterations = int(input("Enter number of iterations (default=1000): ") or "10
 content_weight = float(input("Enter content weight (default=1000): ") or "1000")
 style_weight = float(input("Enter style weight (default=0.01): ") or "0.01")
 
-result_image = run_style_transfer(content_path, style_path, num_iterations, content_weight, style_weight)
+result_image = run_style_transfer(content_path, style_path, num_iterations, content_weight, style_weight, model_path='model')
 Image.fromarray(result_image).show()
