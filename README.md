@@ -28,6 +28,11 @@ The code loads the VGG19 architecture with pre-trained ImageNet weights. It then
 https://user-images.githubusercontent.com/26073311/232408336-a68b7a4e-15f3-4e26-8bf3-f88df05e451f.mp4
 
 
+
+https://user-images.githubusercontent.com/26073311/232408608-99f5d1b6-3553-4c6d-852b-876092d1767a.mp4
+
+
+
 ## Parameters
 * num_iterations: The number of iterations to run the optimization for (default: 1000).
 * content_weight: The weight given to the content loss (default: 1e3).
