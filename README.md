@@ -24,12 +24,13 @@ The script will generate an image with the style of the style image applied to t
 
 The code loads the VGG19 architecture with pre-trained ImageNet weights. It then extracts the features of the content image and the style image from specific layers of the network. The content loss is calculated as the mean squared error between the feature maps of the content image and the generated image. The style loss is calculated as the mean squared error between the Gram matrices of the feature maps of the style image and the generated image. The total loss is a weighted sum of the content loss and the style loss. The generated image is updated using the Adam optimizer to minimize the total loss.
 
+Lake Michigan              |  Sunrise
+:-------------------------:|:-------------------------:
+![lake](https://user-images.githubusercontent.com/26073311/232409439-26d31f0d-036a-4df3-be2c-aa055425eec2.jpeg) |  ![sunrise](https://user-images.githubusercontent.com/26073311/232409577-dc08a2e5-0df1-43c5-855b-0427c0193921.jpeg)
+
+
 
 https://user-images.githubusercontent.com/26073311/232408336-a68b7a4e-15f3-4e26-8bf3-f88df05e451f.mp4
-
-
-
-https://user-images.githubusercontent.com/26073311/232408608-99f5d1b6-3553-4c6d-852b-876092d1767a.mp4
 
 
 
