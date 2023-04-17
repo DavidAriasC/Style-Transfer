@@ -24,6 +24,10 @@ The script will generate an image with the style of the style image applied to t
 
 The code loads the VGG19 architecture with pre-trained ImageNet weights. It then extracts the features of the content image and the style image from specific layers of the network. The content loss is calculated as the mean squared error between the feature maps of the content image and the generated image. The style loss is calculated as the mean squared error between the Gram matrices of the feature maps of the style image and the generated image. The total loss is a weighted sum of the content loss and the style loss. The generated image is updated using the Adam optimizer to minimize the total loss.
 
+
+https://user-images.githubusercontent.com/26073311/232408336-a68b7a4e-15f3-4e26-8bf3-f88df05e451f.mp4
+
+
 ## Parameters
 * num_iterations: The number of iterations to run the optimization for (default: 1000).
 * content_weight: The weight given to the content loss (default: 1e3).
