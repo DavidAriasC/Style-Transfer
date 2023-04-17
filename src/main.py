@@ -3,8 +3,9 @@ import os
 import sys
 import time
 import numpy as np
-import tensorflow as tf
+from tqdm import tqdm
 from PIL import Image
+import tensorflow as tf
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications import vgg19
 from tensorflow.keras import Model
@@ -207,7 +208,7 @@ def run_style_transfer(content_path, style_path, num_iterations=1000, content_we
     global_start = time.time()
 
     # Run optimization loop for specified number of iterations
-    for i in range(num_iterations):
+    for i in tqdm(range(num_iterations)):
         # Compute gradients and loss for given configuration
         grads, all_loss = compute_grads(cfg)
         loss, content_loss, style_loss = all_loss
