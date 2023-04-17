@@ -28,7 +28,6 @@ Content              |  Style
 :-------------------------:|:-------------------------:
 ![lake](https://user-images.githubusercontent.com/26073311/232409439-26d31f0d-036a-4df3-be2c-aa055425eec2.jpeg) |  ![sunrise](https://user-images.githubusercontent.com/26073311/232409577-dc08a2e5-0df1-43c5-855b-0427c0193921.jpeg)
 
-![lake](https://user-images.githubusercontent.com/26073311/232409439-26d31f0d-036a-4df3-be2c-aa055425eec2.jpeg)  ![sunrise](https://user-images.githubusercontent.com/26073311/232409577-dc08a2e5-0df1-43c5-855b-0427c0193921.jpeg)
 
 https://user-images.githubusercontent.com/26073311/232408336-a68b7a4e-15f3-4e26-8bf3-f88df05e451f.mp4
 
