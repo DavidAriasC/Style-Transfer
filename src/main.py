@@ -8,9 +8,17 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications import vgg19
 from tensorflow.keras import Model
 
-content_path = 'content.jpg'
-style_path = 'style.jpg'
-output_path = 'output_{}.jpg'
+if __name__ == '__main__':
+    if len(sys.argv) < 4:
+        print("Usage: python test.py [content_path] [style_path] [content_path]")
+        sys.exit(1)
+    content_path = sys.argv[1]
+    style_path = sys.argv[2]
+    output_path = sys.argv[3]
+    output_path = os.path.splitext(output_path)[0] + '_{}.jpg'
+    print(f"Content path: {content_path}")
+    print(f"Style path: {style_path}")
+    print(f"Output path: {output_path}")
 
 content_layers = ['block5_conv2']
 style_layers = [
@@ -90,6 +98,7 @@ def compute_grads(cfg):
 
 def run_style_transfer(content_path, style_path, num_iterations=1000, content_weight=1e3, style_weight=1e-2):
     model = get_model(content_layers, style_layers)
+    model.summary()
     for layer in model.layers:
         layer.trainable = False
     
@@ -105,7 +114,7 @@ def run_style_transfer(content_path, style_path, num_iterations=1000, content_we
     gram_style_features = [gram_matrix(style_feature) for style_feature in style_features]
     
     init_image = tf.Variable(content_image, dtype=tf.float32)
-    opt = tf.optimizers.Adam(learning_rate=5, beta_1=0.99, epsilon=1e-1)
+    opt = tf.keras.optimizers.legacy.Adam(learning_rate=5, beta_1=0.99, epsilon=1e-1)
 
     iter_count = 1
     best_loss, best_img = float('inf'), None
@@ -144,5 +153,10 @@ def run_style_transfer(content_path, style_path, num_iterations=1000, content_we
     Image.fromarray(best_img).save(output_path.format(num_iterations))
     return best_img
 
-result_image = run_style_transfer(content_path, style_path)
+# Get user input for num_iterations, content_weight, and style_weight
+num_iterations = int(input("Enter number of iterations (default=1000): ") or "1000")
+content_weight = float(input("Enter content weight (default=1000): ") or "1000")
+style_weight = float(input("Enter style weight (default=0.01): ") or "0.01")
+
+result_image = run_style_transfer(content_path, style_path, num_iterations, content_weight, style_weight)
 Image.fromarray(result_image).show()
