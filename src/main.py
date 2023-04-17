@@ -8,20 +8,35 @@ from PIL import Image
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications import vgg19
 from tensorflow.keras import Model
+from tensorflow_addons.layers import InstanceNormalization
+import argparse
+
+parser = argparse.ArgumentParser(description='Neural Style Transfer')
+
+parser.add_argument('content_path', metavar='content_path', type=str,
+                    help='path to the content image')
+parser.add_argument('style_path', metavar='style_path', type=str,
+                    help='path to the style image')
+parser.add_argument('output_path', metavar='output_path', type=str,
+                    help='path to the output image')
+parser.add_argument('--norm', dest='norm', action='store_true',
+                    help='use instance normalization')
+
+args = parser.parse_args()
+
+# access the arguments
+content_path = args.content_path
+style_path = args.style_path
+output_path = os.path.splitext(args.output_path)[0] + '_{}.jpg'
+instance_normalization = args.norm
 
 # Check if the script is being run directly
 if __name__ == '__main__':
     # Check if correct number of arguments are provided
     if len(sys.argv) < 4:
-        print("Usage: python test.py [content_path] [style_path] [content_path]")
+        print("Usage: python test.py --norm [content_path] [style_path] [content_path]")
         sys.exit(1)
-    # Get input paths and output path from user arguments
-    content_path = sys.argv[1]
-    style_path = sys.argv[2]
-    output_path = sys.argv[3]
-    # Create output path by adding suffix
-    output_path = os.path.splitext(output_path)[0] + '_{}.jpg'
-    # Print input and output paths
+    print(f"Instance normalization: {instance_normalization}")
     print(f"Content path: {content_path}")
     print(f"Style path: {style_path}")
     print(f"Output path: {output_path}")
@@ -68,12 +83,23 @@ def get_model(content_layers, style_layers):
     vgg = vgg19.VGG19(include_top=False, weights='imagenet')
     # Freeze the model weights
     vgg.trainable = False
-    # Get outputs for specified content and style layers
     content_outputs = [vgg.get_layer(name).output for name in content_layers]
     style_outputs = [vgg.get_layer(name).output for name in style_layers]
-    # Combine content and style outputs
+
+    #Add instance normalization layers if the flag is set to True
+    if instance_normalization:
+        # Add instance normalization layers
+        for i in range(len(vgg.layers)):
+            # If the layer is a convolutional layer, add an instance normalization layer after it
+            if 'conv' in vgg.layers[i].name:
+                norm_layer = InstanceNormalization(axis=-1)
+                vgg.layers.insert(i+1, norm_layer)
+                norm_layer.build(vgg.layers[i].output_shape)
+                vgg.layers[i+1] = norm_layer
+
+    # Combine the content and style outputs
     model_outputs = content_outputs + style_outputs
-    # Create a new model with input as VGG19 input and output as combined content and style outputs
+    # Create a Keras model with the specified inputs and outputs
     return Model(inputs=vgg.input, outputs=model_outputs)
 
 # Define function to calculate content loss between base content and target content
@@ -137,7 +163,7 @@ def compute_grads(cfg):
     return tape.gradient(total_loss, cfg['init_image']), all_loss
 
 # Define function to run style transfer for given input images and parameters
-def run_style_transfer(content_path, style_path, num_iterations=1000, content_weight=1e3, style_weight=1e-2, model_path=None):
+def run_style_transfer(content_path, style_path, num_iterations=1000, content_weight=1e3, style_weight=1e-2):
     # Get VGG19 model with specified content and style layers
     model = get_model(content_layers, style_layers)
     model.summary()
@@ -206,10 +232,6 @@ def run_style_transfer(content_path, style_path, num_iterations=1000, content_we
     # Save final output image
     Image.fromarray(best_img).save(output_path.format(num_iterations))
 
-    # Save model if path is provided
-    if model_path is not None:
-        model.save(model_path)
-
     # Return final output image
     return best_img
 
@@ -219,6 +241,6 @@ content_weight = float(input("Enter content weight (default=1000): ") or "1000")
 style_weight = float(input("Enter style weight (default=0.01): ") or "0.01")
 
 # Run style transfer with user input parameters
-result_image = run_style_transfer(content_path, style_path, num_iterations, content_weight, style_weight, model_path='model.h5')
+result_image = run_style_transfer(content_path, style_path, num_iterations, content_weight, style_weight)
 # Display final output image
 Image.fromarray(result_image).show()
