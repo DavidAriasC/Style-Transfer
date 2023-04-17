@@ -1,35 +1,33 @@
-## Neural Style Transfer
+# Neural Style Transfer
 
-This code uses Neural Style Transfer to blend the content of an image with the style of another image, producing a new image that represents the content of the first image with the style of the second.
+This code uses the VGG19 architecture for neural style transfer. Given a content image and a style image, it applies the style of the style image to the content image.
 
-### Prerequisites
+## Requirements
 
-To run this code you'll need:
+This code requires the following packages to be installed:
 
-- Python 3
-- TensorFlow 2
-- Numpy
+- numpy
+- tensorflow
 - Pillow
 
-### Usage
+## Usage
 
-To use the code, simply specify the paths to the content and style images at the top of the file:
+Run the script `test.py` and provide the path to the content image, the style image, and the output image.
 
 ```python
-content_path = 'content.jpg'
-style_path = 'style.jpg'
-output_path = 'output.jpg'
-
-# Run style transfer
-run_style_transfer(content_path, style_path, num_iterations=1000, content_weight=1e3, style_weight=1e-2)
-
-# Output image is saved at output_path
+python test.py [content_path] [style_path] [output_path]
 ```
 
-### Parameters
+The script will generate an image with the style of the style image applied to the content image, and save it to the specified output path.
+
+## How it works
+
+The code loads the VGG19 architecture with pre-trained ImageNet weights. It then extracts the features of the content image and the style image from specific layers of the network. The content loss is calculated as the mean squared error between the feature maps of the content image and the generated image. The style loss is calculated as the mean squared error between the Gram matrices of the feature maps of the style image and the generated image. The total loss is a weighted sum of the content loss and the style loss. The generated image is updated using the Adam optimizer to minimize the total loss.
+
+## Parameters
 * num_iterations: The number of iterations to run the optimization for (default: 1000).
 * content_weight: The weight given to the content loss (default: 1e3).
 * style_weight: The weight given to the style loss (default: 1e-2).
 
-### References
+## References
 Gatys, L. A., Ecker, A. S., & Bethge, M. (2015). A Neural Algorithm of Artistic Style. arXiv preprint arXiv:1508.06576.
