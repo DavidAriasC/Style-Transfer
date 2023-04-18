@@ -16,7 +16,7 @@ This code requires the following packages to be installed:
 Run the script `test.py` and provide the path to the content image, the style image, and the output image.
 
 ```console
-python test.py [-h] [--norm] content_path style_path output_path
+python main.py [-h] [--norm] content_path style_path output_path
 ```
 
 The script will generate an image with the style of the style image applied to the content image, and save it to the specified output path.
