@@ -9,6 +9,7 @@ This code requires the following packages to be installed:
 - numpy
 - tensorflow
 - Pillow
+- tqdm
 
 ## Usage
 
