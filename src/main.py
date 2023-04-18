@@ -11,6 +11,8 @@ from tensorflow.keras.applications import vgg19
 from tensorflow.keras import Model
 from tensorflow_addons.layers import InstanceNormalization
 import argparse
+# from keras.utils import plot_model
+
 
 parser = argparse.ArgumentParser(description='Neural Style Transfer')
 
@@ -168,6 +170,8 @@ def run_style_transfer(content_path, style_path, num_iterations=1000, content_we
     # Get VGG19 model with specified content and style layers
     model = get_model(content_layers, style_layers)
     model.summary()
+    # plot_model(model, to_file='model.png', show_shapes=True,show_layer_names=True)
+    
     # Freeze the model layers
     for layer in model.layers:
         layer.trainable = False
